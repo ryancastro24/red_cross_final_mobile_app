@@ -1,6 +1,6 @@
 
 import  { useState, useCallback, } from 'react'
-import { StyleSheet , View, TouchableOpacity } from 'react-native';
+import { StyleSheet , View, TouchableOpacity,Text,Image } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import { useFocusEffect} from '@react-navigation/native';
@@ -87,7 +87,18 @@ export default function CertificateDownload() {
     <View style={{width:"100%",height:200, flex:1, padding:10,paddingVertical:50}}>
 
 
-      <TouchableOpacity disabled={!userData.certificatedApproved} onPress={downloadCertificate} style={{width:"100%", height:250,borderRadius:10,backgroundColor:userData.certificatedApproved ? "#282828" : `red`}} >
+      <TouchableOpacity disabled={!userData.certificatedApproved} onPress={downloadCertificate} style={{width:"100%", height:250,borderRadius:10,position:"relative",overflow:"hidden"}} >
+
+            <Image style={{objectFit:"cover",width:"100%",height:"100%"}} source={require(`../../assets/images/sampleCert.jpg`)} />
+
+
+        
+            <View style={{width:"100%",height:"100%",position:"absolute",backgroundColor:"#282828",zIndex:10,opacity:0.8,justifyContent:"center",alignItems:"center"}}>
+            
+              <Text style={{color:"white",fontSize:20,fontWeight:"900"}}>{!userData.certificatedApproved ? "LOCKED" : "DOWNLOAD NOW"}</Text>
+            </View>
+        
+
 
       </TouchableOpacity>
 
