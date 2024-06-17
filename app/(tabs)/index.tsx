@@ -6,7 +6,6 @@ import { Searchbar,ActivityIndicator } from 'react-native-paper';
 import { modules } from '@/libs/modules';
 import { Link } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Tabs} from 'expo-router';
 
 
 type LastModulePropType = {
@@ -19,13 +18,20 @@ type LastModulePropType = {
 
 }
 
+type UserDataPropType = {
+  name:string
+}
+
+
+
+
 const HomeScreen : React.FC = () => {
 
 
     const navigation = useNavigation();
 
 
-    const [userData,setUserData] = useState('')
+    const [userData,setUserData] = useState({} as UserDataPropType)
     const [searchData,setSearchData] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -58,39 +64,37 @@ const HomeScreen : React.FC = () => {
 
 
 
-    
-    // const navigateProfile = () => {
-    //   navigation.navigate('EditProfile', { userData });
-    // }
 
 
 
-    // async function getData() {
-    //   try {
-    //     const token = await AsyncStorage.getItem('token');
+    async function getData() {
+      try {
+        const token = await AsyncStorage.getItem('token');
     
-    //     const response = await fetch('https://red-cross-api-final.onrender.com/userdata', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //       body: JSON.stringify({ token: token })
-    //     });
+        const response = await fetch('https://red-cross-api-final.onrender.com/userdata', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ token: token })
+        });
     
-    //     if (!response.ok) {
-    //       throw new Error('Network response was not ok');
-    //     }
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
     
-    //     const data = await response.json();
+        const data = await response.json();
 
-    //     console.log(data);
-    //     setUserData(data.data);
-    //   } catch (error) {
-    //     console.error('Error:', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // }
+        const finalUserData = data.data 
+        console.log(finalUserData)
+        setUserData(finalUserData);
+
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
     
 
 
@@ -132,36 +136,29 @@ const HomeScreen : React.FC = () => {
 
 
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     getData();
+  useFocusEffect(
+    useCallback(() => {
+      getData();
      
-  //   },[]),
+    },[]),
   
-  // );
+  );
 
 
-  // if (loading) {
-  //   return (
-  //     <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-  //       <ActivityIndicator size="large" animating={true} color="#FF0000" />
-  //     </View>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <ActivityIndicator size="large" animating={true} color="#FF0000" />
+      </View>
+    );
+  }
   
-  // if (error) {
-  //   return (
-  //     <View>
-  //       <Text>Error: {error.message}</Text>
-  //     </View>
-  //   );
-  // }
-
  
 
 
 
-  // const firstname = userData.name.split(' ');
+  const firstname = userData.name.split(' ');
+
   const finalModules = modules.filter(val => val.title.startsWith(searchData));
   
 
@@ -200,8 +197,7 @@ interface ItemProps extends Module {
 
 
 
-    const loggedin : boolean = true;
-    
+
 
  
   return (  
@@ -217,9 +213,9 @@ interface ItemProps extends Module {
 
                 <View style={{flexDirection:"row", justifyContent:"space-between"}}>
 
-                  <Text  style={{fontSize:35,fontWeight:"700",}}> <Text style={{fontSize:35,fontWeight:"100",fontStyle:"italic",color:"white"}}>Hello, </Text><Text  style={{color:"white"}}>Ryan</Text></Text>
+                  <Text  style={{fontSize:35,fontWeight:"700",}}> <Text style={{fontSize:35,fontWeight:"100",fontStyle:"italic",color:"white"}}>Hello, </Text><Text  style={{color:"white"}}>{firstname[0]}</Text></Text>
           
-                  <TouchableOpacity style={styles.imageProfile}></TouchableOpacity>
+                  <Link push href={'/profile'} style={styles.imageProfile}></Link>
 
                 </View>
 
