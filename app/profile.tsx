@@ -1,7 +1,7 @@
 import {useCallback, useState} from 'react'
-import { View,Text,TouchableOpacity,StyleSheet,Alert,Platform} from 'react-native'
+import { View,Text,TouchableOpacity,StyleSheet,Alert,Image} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useRouter } from 'expo-router'
+import { router } from 'expo-router'
 import {useFocusEffect} from '@react-navigation/native';
 
 
@@ -10,15 +10,15 @@ type UserPropType = {
     address: string,
     email:string,
     contact:string,
-    userType:string
+    userType:string,
+    profilePictureUrl:string
 }
 const EditProfile = () => {
 
     const [userData,setUserData] = useState({} as UserPropType);
     const [loading,setLoading] = useState(false);
 
-    const router = useRouter();
-
+    
 
     async function getData() {
         try {
@@ -90,35 +90,41 @@ const EditProfile = () => {
     <View style={{flex:1, alignItems:"center",position:"relative"}}>
 
 
-            <View style={{backgroundColor:"#000000",width:"100%",height:150}}></View>
+            <View style={{backgroundColor:"#000000",width:"100%",height:150,overflow:"hidden",alignItems:"center",justifyContent:"center",}}>
+              <Image  width={200}  height={200} source={require("../assets/images/redcross team.png")}/>
+            </View>
 
 
 
         <View style={{position:"relative",top:-80, alignItems:"center",width:"100%"}}>
         
-          <View style={{width:140,height:140,borderRadius:100,backgroundColor:"#d9d9d9"}}></View>
+          <View style={{width:140,height:140,borderRadius:100,backgroundColor:"#d9d9d9",overflow:"hidden",alignItems:"center",justifyContent:"center"}}>
+          <Image  width={140}  height={140}  source={{
+          uri: userData.profilePictureUrl,
+        }}/>
+          </View>
     
           <View style={{marginTop:10,width:"100%",paddingHorizontal:25}}>
 
             <View>
-              <Text style={{fontSize:25,fontWeight:"bold",color:"white",textAlign:"center"}}>{userData.name}</Text>
+              <Text style={{fontSize:35,fontWeight:900,textAlign:"center"}}>{userData.name}</Text>
               <Text style={{fontSize:20,fontWeight:"200",color:"gold",textAlign:"center",fontStyle:"italic"}}>{userData.userType}</Text>
             
               </View>
             <View style={{marginTop:35,gap:20,width:"100%"}}>
                   <View style={{justifyContent:"space-between",flexDirection:"row",alignItems:"center",width:"100%"}}>
-                    <Text style={{fontWeight:"normal",fontSize:20,color:"white"}}>Email</Text> 
-                    <Text style={{fontSize:20,color:"white",fontWeight:"200"}}>{userData.email}</Text>
+                    <Text style={{fontWeight:900,fontSize:20}}>Email</Text> 
+                    <Text style={{fontSize:20,fontWeight:"200"}}>{userData.email}</Text>
                   </View>
 
                   <View style={{justifyContent:"space-between",flexDirection:"row",alignItems:"center",width:"100%"}}>
-                    <Text style={{fontWeight:"normal",fontSize:20,color:"white"}}>Address</Text> 
-                    <Text style={{fontSize:20,color:"white",fontWeight:"200"}}>{userData.address}</Text>
+                    <Text style={{fontWeight:900,fontSize:20}}>Address</Text> 
+                    <Text style={{fontSize:20,fontWeight:"200"}}>{userData.address}</Text>
                   </View>
 
                   <View style={{justifyContent:"space-between",flexDirection:"row",alignItems:"center",width:"100%"}}>
-                    <Text style={{fontWeight:"normal",fontSize:20,color:"white"}}>Phone</Text> 
-                    <Text style={{fontSize:20,color:"white",fontWeight:"200"}}>{userData.contact}</Text>
+                    <Text style={{fontWeight:900,fontSize:20}}>Phone</Text> 
+                    <Text style={{fontSize:20,fontWeight:"200"}}>{userData.contact}</Text>
                   </View>
                   
               </View>
@@ -126,8 +132,8 @@ const EditProfile = () => {
 
           <View style={{marginTop:70,gap:10,width:"100%"}}>
 
-            <TouchableOpacity style={styles.changePassBtn}>
-                <Text style={{fontSize:16,color:"white",textAlign:"center",fontWeight:"200"}}>CHANGE PASSWORD</Text>
+            <TouchableOpacity onPress={() => router.push('/changePassword')} style={styles.changePassBtn}>
+                <Text style={{fontSize:16,textAlign:"center",fontWeight:"200"}}>CHANGE PASSWORD</Text>
             </TouchableOpacity>
 
 

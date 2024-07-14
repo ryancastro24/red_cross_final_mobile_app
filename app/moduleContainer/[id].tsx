@@ -20,16 +20,22 @@ import Module13 from "@/moduleScreens/Module13";
 import RedCrossServices from "@/moduleScreens/RedCrossServices";
 import FundamentalPrinciples from "@/moduleScreens/Fundamentals";
 import { modules } from "@/libs/modules";
+
+
+type ParamsTypes ={
+  id:string,
+  title:string | undefined
+}
 const ModuleCard = () => {
 
 
 
-  const {id} = useLocalSearchParams();
+  const {id,title} = useLocalSearchParams() as ParamsTypes;
 
 
   return (
     <>
-     <Stack.Screen options={{ title: 'ModuleCard' }} />
+     <Stack.Screen options={{ title: title }} />
     <View style={{padding:15}}>
         
 

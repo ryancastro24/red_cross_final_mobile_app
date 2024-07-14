@@ -36,7 +36,7 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={colorScheme === 'light' ? DarkTheme : DefaultTheme}>
 
       <Stack>
     
@@ -46,6 +46,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="moduleContainer/[id]"  /> 
         <Stack.Screen name="profile"  /> 
+        <Stack.Screen name="changePassword"  /> 
        
       
       </Stack>  

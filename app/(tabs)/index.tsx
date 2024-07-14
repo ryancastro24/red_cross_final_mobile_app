@@ -1,11 +1,12 @@
 import  { useState, useCallback, useEffect} from 'react'
-import { View,Image, Text,StyleSheet,TouchableOpacity,Alert,FlatList,TextInput} from 'react-native'
+import { View,Image, Text,StyleSheet,TouchableOpacity,Alert,FlatList,ImageBackground} from 'react-native'
 import Module1 from '@/moduleScreens/Module1';
 import { useNavigation ,useFocusEffect} from '@react-navigation/native';
 import { Searchbar,ActivityIndicator } from 'react-native-paper';
 import { modules } from '@/libs/modules';
-import { Link } from 'expo-router';
+import { Link,router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Svg from 'react-native-svg';
 
 
 type LastModulePropType = {
@@ -19,7 +20,8 @@ type LastModulePropType = {
 }
 
 type UserDataPropType = {
-  name:string
+  name:string,
+  profilePictureUrl:string
 }
 
 
@@ -179,24 +181,26 @@ interface ItemProps extends Module {
 
 //every box or container of the modules
     const Item : React.FC<ItemProps>  = ({title,topics,index,id,}) => (
-     <Link  onPress={() => sendData(id,title)}  push href={{
-      pathname: "/moduleContainer/[id]",
-      params: { id: id } 
-      }} style={{...styles.item,...styles.shadowProp, marginLeft: index === 0 ? 0 : 20}}>      
-          
-      {/* <View>
-        <Image style={{width:"100%",height:100,borderRadius:10}} resizeMode='cover' source={require(`../../assets/images/first aid.jpg`)}/>
-      </View> */}
-
-
-        <Text style={styles.title}> {title}</Text>
+     
+      <TouchableOpacity  onPress={() => {
+        sendData(id,title)
+        router.push("/moduleContainer/[id]")
+        router.setParams({id:id.toString(),title:title})
+  
+       }  } style={{...styles.item,...styles.shadowProp, marginLeft: index === 0 ? 0 : 20}}>      
       
-      </Link>
-
+      <Image style={{position:"absolute",top:70,width:"100%",height:200,left:10}} source={require('../../assets/images/undraw_Reading_re_29f8.png')} />
+  
+  
+          <Text numberOfLines={1} style={styles.title}> {title}</Text>
+        
+        </TouchableOpacity>
     );
 
 
 
+
+  
 
 
  
@@ -213,9 +217,17 @@ interface ItemProps extends Module {
 
                 <View style={{flexDirection:"row", justifyContent:"space-between"}}>
 
-                  <Text  style={{fontSize:35,fontWeight:"700",}}> <Text style={{fontSize:35,fontWeight:"100",fontStyle:"italic",color:"white"}}>Hello, </Text><Text  style={{color:"white"}}>{firstname[0]}</Text></Text>
+                  <Text  style={{fontSize:35,fontWeight:"700",}}> <Text style={{fontSize:35,fontWeight:"100",fontStyle:"italic",color:"black"}}>Hello, </Text><Text  style={{color:"black"}}>{firstname[0]}</Text></Text>
           
-                  <Link push href={'/profile'} style={styles.imageProfile}></Link>
+                
+
+
+                  
+                  <TouchableOpacity onPress={()=> router.push('/profile')}   style={{...styles.imageProfile,overflow:"hidden"}}>
+                      <Image  width={45}  height={45}  source={{
+                      uri: userData.profilePictureUrl,
+                    }}/>
+                  </TouchableOpacity>
 
                 </View>
 
@@ -225,8 +237,8 @@ interface ItemProps extends Module {
                     placeholder="Search"
                     onChangeText={setSearchData}
                     value={searchData}
-                    theme={{ colors: { primary: '#282828' } }}
-                    style={{backgroundColor:"#282828",borderRadius:5}}
+                    theme={{ colors: { primary: 'white' } }}
+                    style={{backgroundColor:"white",borderRadius:5}}
                     inputStyle={{fontSize:18,color:"white",padding:0}}
                   
                   />
@@ -240,21 +252,24 @@ interface ItemProps extends Module {
        
       
       <View style={styles.currentModuleContainer}>
-        <Text style={{fontSize:20,fontWeight:"700",color:"white"}} >Last Module Access</Text>
+        <Text style={{fontSize:18 ,fontWeight:"300",color:"black"}} >Last Module Access</Text>
 
-        <Link  push href={{
-      pathname: "/moduleContainer/[id]",
-      params: { id:lastModuleAcess?.id } 
-      }}   style={styles.currentReadModule}>
+        <TouchableOpacity   onPress={() => {
+        
+        router.push("/moduleContainer/[id]")
+        router.setParams({id:lastModuleAcess?.id .toString(),title:lastModuleAcess?.title})
+  
+       }  }  style={styles.currentReadModule}>
 
           <Text style={{fontSize:30,color:'white',fontWeight:"900"}}>{lastModuleAcess?.title}</Text>
 
 
-              {/* <View>
+              <View>
                     {lastModuleAcess?.topics.map(val => <Text style={{color:"white"}} key={val.id}>- {val.topicTitle}</Text>)}
-              </View> */}
-        </Link>
-          
+              </View>
+        </TouchableOpacity>
+
+     
       </View>
 
 
@@ -308,25 +323,28 @@ const styles = StyleSheet.create({
       justifyContent:"space-evenly"
     }, 
     item: {
-      backgroundColor: '#282828',
+      backgroundColor: 'white',
       borderRadius: 8,
       padding:10,
       width: 250,
       marginVertical: 10,
+      position:"relative",   
+      overflow:"hidden"
       
     },
     shadowProp: {
-      shadowColor: '#171717',
-      shadowOffset: {width: -2, height: 4},
+      shadowColor: 'black',
+      shadowOffset: {width: -2, height: 2},
       shadowOpacity: 1,
       shadowRadius: 3,
     },
     title: {
-      fontSize:35,
+      fontSize:25,
       fontWeight:"bold",
       paddingHorizontal:10,
       marginTop:10,
-      color:"white"
+      color:"black"
+    
     },
 
     topicsStyle:{
@@ -336,7 +354,8 @@ const styles = StyleSheet.create({
       width:45,
       height:45,
       borderRadius:100,
-      backgroundColor:"#d9d9d9"
+      backgroundColor:"#d9d9d9",
+      position:"relative"
     },
     searchInput:{
       width:"100%",
@@ -352,16 +371,23 @@ const styles = StyleSheet.create({
       gap:5,
     
     },
+    image: {
+      flex: 1,
+      justifyContent: 'center',
+    },
     currentReadModule:{
-      backgroundColor: '#7B0000',
-      borderRadius: 8,
+      backgroundColor: '#D80000',
+      borderRadius:5,
       padding:15,
       width:"100%",
       marginVertical: 10,
       height:150,
       gap:10
       
-    }
+    },
+   
+
+  
    
   
 })

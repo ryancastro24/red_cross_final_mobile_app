@@ -15,7 +15,7 @@ const Module1 = () => {
       
         
         <View style={{width:"100%",backgroundColor:"#7E0303",borderRadius:4, padding:12}}>
-            <Text style={{color:"white",fontSize:23,fontWeight:"bold"}}>Scope and Limitation</Text>
+            <Text style={{fontSize:23,fontWeight:"bold",color:"white",}}>Scope and Limitation</Text>
             <Text style={{color:"white",fontSize:16,lineHeight:20 ,marginTop:7 ,textAlign:"justify"}}>First aid does not imply medical treatment and is by no means a replacement for it.</Text>
             
         </View >
@@ -40,7 +40,7 @@ const Module1 = () => {
 
             <View style={{width:"100%",borderWidth:1, borderStyle: 'solid',borderColor:"black",borderRadius:5 ,marginTop:20}}>
                     <View style={{width:"100%",backgroundColor:"#7E0303", padding:12}}>
-                    <Text style={{color:"white",fontSize:18,fontWeight:"bold",textAlign:"center"}}>According to Article 12 no.4 of Act No.3815 of the Philippine Revised Penal Code Book One</Text>
+                    <Text style={{fontSize:18,fontWeight:"bold",textAlign:"center",color:"white"}}>According to Article 12 no.4 of Act No.3815 of the Philippine Revised Penal Code Book One</Text>
                     </View>
                     <View style={{padding:10}}>
                         <Text style={styles.p}>
@@ -70,7 +70,7 @@ const Module1 = () => {
 
             <View style={{width:"100%",borderWidth:1,marginBottom:20, borderStyle: 'solid',borderColor:"black",borderRadius:5 ,marginTop:20}}>
                     <View style={{width:"100%",backgroundColor:"#7E0303", padding:12}}>
-                    <Text style={{color:"white",fontSize:18,fontWeight:"bold",textAlign:"center"}}>According to Article 275 Nos. 1 & 2 of Act No. 3815 of the Philippine Revised Penal Code Book Two:
+                    <Text style={{fontSize:18,fontWeight:"bold",textAlign:"center",color:"white"}}>According to Article 275 Nos. 1 & 2 of Act No. 3815 of the Philippine Revised Penal Code Book Two:
 "Abandonment of person in danger and abandonment of one's own victim."</Text>
                     </View>
                     <View style={{padding:10, gap:7}}>
@@ -97,13 +97,13 @@ const Module1 = () => {
 
                    
                 <View style={{width:"100%",backgroundColor:"#7E0303",borderRadius:4, padding:12}}>
-                    <Text style={{color:"white",fontSize:23,fontWeight:"bold"}}>Dieseas Transmission</Text>
-                    <Text style={{color:"white",fontSize:16,lineHeight:20 ,marginTop:7 ,textAlign:"justify"}}>Infectious diseases are those that can spread from one person to another through the following ways: </Text>
+                    <Text style={{fontSize:23,fontWeight:"bold",color:"white"}}>Dieseas Transmission</Text>
+                    <Text style={{fontSize:16,lineHeight:20 ,marginTop:7 ,textAlign:"justify",color:"white"}}>Infectious diseases are those that can spread from one person to another through the following ways: </Text>
                     <View style={{marginTop:10,gap:7}}>
-                        <Text style={{color:"white",fontSize:16}}>- Direct contact</Text>
-                        <Text style={{color:"white",fontSize:16}}>- Indirect contact</Text>
-                        <Text style={{color:"white",fontSize:16}}>- Airborne transmission</Text>
-                        <Text style={{color:"white",fontSize:16}}>- Bites</Text>
+                        <Text style={{fontSize:16,color:"white"}}>- Direct contact</Text>
+                        <Text style={{fontSize:16,color:"white"}}>- Indirect contact</Text>
+                        <Text style={{fontSize:16,color:"white"}}>- Airborne transmission</Text>
+                        <Text style={{fontSize:16,color:"white"}}>- Bites</Text>
                        
                     </View>
 
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     subheader:{ 
 
         fontSize:30,
-        color:"white",
+        
         fontWeight:"900"
         
     },
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
         fontSize:16,
         lineHeight:25,
         textAlign:"justify", 
-        color:"white"
+        
     }
 })
 

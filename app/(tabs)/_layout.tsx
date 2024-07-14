@@ -31,7 +31,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={"black"} />
           ),
         }}
       />
@@ -40,7 +40,7 @@ export default function TabLayout() {
         options={{
           title: 'Certicate',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'document-outline' : 'document-outline'} color={color} />
+            <TabBarIcon name={focused ? 'document' : 'document-outline'} color={"black"} />
           ),
         }}
       />
