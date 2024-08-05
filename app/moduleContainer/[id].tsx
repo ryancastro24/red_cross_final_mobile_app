@@ -19,7 +19,7 @@ import Module12 from "@/moduleScreens/Module12";
 import Module13 from "@/moduleScreens/Module13";
 import RedCrossServices from "@/moduleScreens/RedCrossServices";
 import FundamentalPrinciples from "@/moduleScreens/Fundamentals";
-import { modules } from "@/libs/modules";
+
 
 
 type ParamsTypes ={

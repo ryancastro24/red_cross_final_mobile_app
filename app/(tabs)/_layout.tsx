@@ -12,12 +12,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 export default function TabLayout() {
   const colorScheme = useColorScheme()
 
-
-
-
   return (
-
-
 
 
     <Tabs
@@ -44,6 +39,21 @@ export default function TabLayout() {
           ),
         }}
       />
+
+
+  <Tabs.Screen
+        name="evaluation"
+        options={{
+          title: 'Evaluation',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'people' : 'people-outline'} color={"black"} />
+          ),
+        }}
+      />
+
+      
+      
+
 
 
 

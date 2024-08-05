@@ -47,6 +47,7 @@ export default function RootLayout() {
         <Stack.Screen name="moduleContainer/[id]"  /> 
         <Stack.Screen name="profile"  /> 
         <Stack.Screen name="changePassword"  /> 
+        <Stack.Screen name="evaluationForm"  /> 
        
       
       </Stack>  

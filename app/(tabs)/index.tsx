@@ -217,7 +217,7 @@ interface ItemProps extends Module {
 
                 <View style={{flexDirection:"row", justifyContent:"space-between"}}>
 
-                  <Text  style={{fontSize:35,fontWeight:"700",}}> <Text style={{fontSize:35,fontWeight:"100",fontStyle:"italic",color:"black"}}>Hello, </Text><Text  style={{color:"black"}}>{firstname[0]}</Text></Text>
+                  <Text  style={{fontSize:35,fontWeight:"900", color:"#131212"}}> <Text style={{fontSize:35,fontWeight:"100",fontStyle:"italic",color:"black"}}>Hello, </Text><Text  style={{color:"black"}}>{firstname[0]}</Text></Text>
           
                 
 
