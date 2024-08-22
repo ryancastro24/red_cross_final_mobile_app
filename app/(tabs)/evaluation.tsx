@@ -1,13 +1,13 @@
 import { View,Text, StyleSheet,FlatList,TouchableOpacity} from "react-native"
-import { sampleTrainers } from "@/libs/sampleTrainers";
 import {router } from 'expo-router';
+import { useState,useCallback } from "react";
+import { useFocusEffect} from '@react-navigation/native';
 
-
-const Item   = ({name,field,id}:{name:string,field:string,id:number}) => (
+const Item   = ({name,field,id}:{name:string,field:string,id:string}) => (
      
   <TouchableOpacity onPress={() => {
     router.push("/evaluationForm")
-    router.setParams({id:id.toString(),name:name,field:field})
+    router.setParams({id:id,name:name,field:field})
   }} style={styles.cardContainer} key={id} >      
   
         <View style={{width:60,height:60,borderRadius:120,backgroundColor:"#F1EFEF"}}></View>
@@ -23,6 +23,53 @@ const Item   = ({name,field,id}:{name:string,field:string,id:number}) => (
 const Evaulation = () => {
 
 
+  const [instructors,setInstructors] = useState(null);
+
+
+  console.log(instructors)
+  
+  async function getData() {
+    try {
+     
+  
+      const response = await fetch('https://red-cross-api-final.onrender.com/api/instructors');
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+
+      console.log(data)
+      setInstructors(data);
+
+    } catch (error) {
+      console.error('Error:', error);
+    } 
+  }
+  
+
+  
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+     
+    },[]),
+  
+  );
+
+
+if(instructors === null) {
+  return(
+    <View>
+      <Text>Loading....</Text>
+    </View>
+  )
+}
+  
+
+
+else {
 
   
   return (
@@ -40,13 +87,14 @@ const Evaulation = () => {
       <FlatList
            
           showsVerticalScrollIndicator={false} 
-           data={sampleTrainers}
+           data={instructors}
             renderItem={({item}) => <Item  {...item} />}
-            keyExtractor={item =>  item.id.toString()}
+            keyExtractor={item =>  item._id}
            />
      
     </View>
   )
+}
 }
 
 
