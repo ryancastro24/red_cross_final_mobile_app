@@ -73,7 +73,7 @@ const HomeScreen : React.FC = () => {
       try {
         const token = await AsyncStorage.getItem('token');
     
-        const response = await fetch('https://red-cross-api-final.onrender.com/userdata', {
+        const response = await fetch('https://red-cross-api-final.onrender.com/api/user/userData', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

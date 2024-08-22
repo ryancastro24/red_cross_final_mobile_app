@@ -45,7 +45,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="moduleContainer/[id]"  /> 
-        <Stack.Screen name="profile"  /> 
+        <Stack.Screen name="profile" /> 
         <Stack.Screen name="changePassword"  /> 
         <Stack.Screen name="evaluationForm"  /> 
        

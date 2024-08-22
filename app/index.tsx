@@ -32,7 +32,7 @@ const MainPage = () => {
           password,
         };
     
-        fetch('https://red-cross-api-final.onrender.com/login-user', {
+        fetch('https://red-cross-api-final.onrender.com/api/user/loginUser', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
@@ -88,7 +88,6 @@ const MainPage = () => {
         <TextInput  
         onChange={e => setEmail(e.nativeEvent.text)}
         placeholder='Enter Email' 
-        
         style={styles.input} 
         />
 
