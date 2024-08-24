@@ -39,19 +39,19 @@ const ModuleCard = () => {
     <View style={{padding:15}}>
         
 
-        {id == "1" && <Module1/>}
-        {id == "2" && <Module2/>}
-        {id == "3" && <Module3/>}
-        {id == "4" && <Module4/>}
-        {id == "5" && <Module5/>}
-        {id == "6" && <Module6/>}
-        {id == "7" && <Module7/>}
-        {id == "8" && <Module8/>}
-        {id == "9" && <Module9/>}
-        {id == "10" && <Module10/>}
-        {id == "11" && <Module11/>}
-        {id == "12" && <Module12/>}
-        {id == "13" && <Module13/>}
+        {id == "1" && <Module1 moduleId={1}/>}
+        {id == "2" && <Module2 moduleId={2}/>}
+        {id == "3" && <Module3 moduleId={3}/>}
+        {id == "4" && <Module4 moduleId={4}/>}
+        {id == "5" && <Module5 moduleId={5}/>}
+        {id == "6" && <Module6 moduleId={6}/>}
+        {id == "7" && <Module7 moduleId={7}/>}
+        {id == "8" && <Module8 moduleId={8}/>}
+        {id == "9" && <Module9 moduleId={9}/>}
+        {id == "10" && <Module10 moduleId={10}/>}
+        {id == "11" && <Module11 moduleId={11}/>}
+        {id == "12" && <Module12 moduleId={12}/>}
+        {id == "13" && <Module13 moduleId={13}/>}
         {id == "14" && <RedCrossServices/>}
         {id == "15" && <FundamentalPrinciples/>}
         

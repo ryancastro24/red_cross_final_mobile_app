@@ -1,7 +1,7 @@
 import React from 'react'
-import { View,ScrollView,Text } from 'react-native'
-
-const Module12 = () => {
+import { View,ScrollView,Text,TouchableOpacity } from 'react-native'
+import { router } from 'expo-router';
+const Module12 = ({moduleId}:{moduleId:number}) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{gap:10}}>
@@ -173,10 +173,18 @@ const Module12 = () => {
         </View>
 
 
-
-
-
         </View>
+
+    <View>
+        <TouchableOpacity
+        onPress={() => {
+            router.push("/moduleQuizContainer/[id]")
+            router.setParams({moduleId:moduleId.toString()})
+        }}
+         style={{width:"100%",height:50,backgroundColor:"red" ,alignItems:"center",justifyContent:"center",borderRadius:3,marginTop:30}}>
+            <Text style={{color:"white",fontSize:20}}>TAKE THE QUIZ</Text>
+        </TouchableOpacity>
+     </View>
     </ScrollView>
   )
 }

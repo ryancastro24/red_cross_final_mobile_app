@@ -1,10 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { ProgressBar, MD3Colors } from 'react-native-paper';
 type UserPropType = {
   _id: string;
   name: string;
@@ -25,10 +25,71 @@ type UserAssessmentProptype = {
 };
 
 export default function CertificateDownload() {
+
+  
   const [userData, setUserData] = useState<UserPropType | null>(null); // Initialize with null to check if data is loaded
   const [loading, setLoading] = useState(true);
-  const [userAssessment, setUserAssessment] = useState<UserAssessmentProptype | null>(null); // Initialize with null
+  const [userAssessment, setUserAssessment] = useState({} as UserAssessmentProptype); // Initialize with null
   const [userAssessmentFlag, setUserAssessmentFlag] = useState(false);
+
+
+  const handleUserAssessmentProgressBar = (data:string) => {
+
+    switch(data){
+      case "excellent" :{
+        return 1
+      }
+      break;
+      case "good" :{ 
+        return 0.75
+      }
+      break;
+      case "satisfactory":{
+        return 0.5
+      }
+      break;
+
+      case "needs-improvement" :{
+        return 0.25
+      }
+      break;
+
+      case "unsatisfactory":{
+        return 0.10
+      }
+      break;
+
+    }
+  }
+
+
+
+  const ratingLabel = (rate:string) => {
+    switch(rate) {
+     case "unsatisfactory": {
+       return "#FF0000"
+     }
+     break;
+     case "needs-improvement": {
+       return "#56423d"
+     }
+     break;
+     case "satisfactory": {
+       return "#bea6a0"
+     }
+     break;
+     case "good": {
+       return "#009700"
+     }
+     break;
+     case "excellent": {
+       return "#006100"
+     }
+     break;
+
+    }
+   }
+
 
   const getData = async () => {
     try {
@@ -42,18 +103,15 @@ export default function CertificateDownload() {
         body: JSON.stringify({ token: token }),
       });
 
-      if (!response.ok) {
-        setUserAssessmentFlag(true);
-      }
+    
 
       const data = await response.json();
 
       console.log(`certificate data: ${JSON.stringify(data, null, 2)}`);
       setUserData(data.data);
+      
     } catch (error) {
       console.error('Error:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -73,6 +131,7 @@ export default function CertificateDownload() {
       } else {
         console.log(`user assessment data: ${JSON.stringify(data, null, 2)}`);
         setUserAssessment(data);
+        setUserAssessmentFlag(false)
       }
     } catch (error) {
       console.error('Error:', error);
@@ -105,7 +164,8 @@ export default function CertificateDownload() {
   };
 
   return (
-    <View style={{ width: '100%', height: 200, flex: 1, padding: 10, paddingVertical: 50 }}>
+    <ScrollView>
+    <View style={{ width: '100%', flex: 1, padding: 10, paddingVertical: 50 }}>
       <TouchableOpacity
         disabled={!userData?.certificatedApproved}
         onPress={downloadCertificate}
@@ -135,30 +195,81 @@ export default function CertificateDownload() {
       </TouchableOpacity>
 
       {userAssessmentFlag ? (
-        <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
+        <View style={{flex:1,alignItems:"center",justifyContent:"center",marginTop:50}}>
           <Text style={{fontSize:30,fontWeight:"200"}}>Not Evaluated Yet! 🥺</Text>
         </View>
       ) : (
-        <View>
-          <Text style={{ fontSize: 18 }}>
-            <Text style={{ fontWeight: '900' }}>First Aid</Text>: {userAssessment?.firsAid}
-          </Text>
-          <Text style={{ fontSize: 18 }}>
-            <Text style={{ fontWeight: '900' }}>CPR</Text>: {userAssessment?.cpr}
-          </Text>
-          <Text style={{ fontSize: 18 }}>
-            <Text style={{ fontWeight: '900' }}>Pathogen</Text>: {userAssessment?.pathogen}
-          </Text>
-          <Text style={{ fontSize: 18 }}>
-            <Text style={{ fontWeight: '900' }}>Preparedness</Text>: {userAssessment?.preparedness}
-          </Text>
-          <Text style={{ fontSize: 18 }}>
-            <Text style={{ fontWeight: '900' }}>Team Work</Text>: {userAssessment?.teamwork}
-          </Text>
+        <View style={{flex:1,alignItems:"center",justifyContent:"center",padding:30}}>
+          <Text style={{fontSize:25,fontWeight:"200"}}>MY EVALUATION SCORE</Text>
+
+        <View style={{flexDirection:"row",width:"100%",marginTop:30,alignItems:"center", justifyContent:"space-evenly"}}>
+            
+            <View style={{alignItems:"center",gap:2}}>
+              <View style={{width:20,height:20,backgroundColor:"#ff0000",borderRadius:3}}></View>
+              <Text>WORST</Text>
+            </View>
+
+            <View style={{alignItems:"center",gap:2}}>
+              <View style={{width:20,height:20,backgroundColor:"#56423d",borderRadius:3}}></View>
+              <Text>BAD</Text>
+            </View>
+
+            <View style={{alignItems:"center",gap:2}}>
+              <View style={{width:20,height:20,backgroundColor:"#bea6a0",borderRadius:3}}></View>
+              <Text>NEUTRAL</Text>
+            </View>
+
+            <View style={{alignItems:"center",gap:2}}>
+              <View style={{width:20,height:20,backgroundColor:"#009700",borderRadius:3}}></View>
+              <Text>GOOD</Text>
+            </View>
+
+            <View style={{alignItems:"center",gap:2}}>
+              <View style={{width:20,height:20,backgroundColor:"#006100",borderRadius:3}}></View>
+              <Text>EXCELLENT</Text>
+            </View>
         </View>
-      )}
-    </View>
-  );
+
+        <View style={{gap:20,width:"100%",marginTop:30}} >
+
+          <View style={{width:"100%",gap:5}}> 
+            <Text style={{fontSize:18}}>First Aid Performance</Text>
+            <ProgressBar style={{height:10,borderRadius:2}} progress={handleUserAssessmentProgressBar(userAssessment?.firsAid)} color={ratingLabel(userAssessment?.firsAid)} />
+          </View>
+
+          <View style={{width:"100%",gap:5}}> 
+            <Text style={{fontSize:18}}>CPR Performance</Text>
+            <ProgressBar style={{height:10,borderRadius:2}} progress={handleUserAssessmentProgressBar(userAssessment?.cpr)} color={ratingLabel(userAssessment?.cpr)} />
+          </View>
+
+
+          <View style={{width:"100%",gap:5}}> 
+            <Text style={{fontSize:18}}>Pathogen Performance</Text>
+            <ProgressBar style={{height:10,borderRadius:2}} progress={handleUserAssessmentProgressBar(userAssessment?.pathogen)} color={ratingLabel(userAssessment?.pathogen)} />
+          </View>
+
+
+          <View style={{width:"100%",gap:5}}> 
+            <Text style={{fontSize:18}}>Preparedness in sessions</Text>
+            <ProgressBar style={{height:10,borderRadius:2}} progress={handleUserAssessmentProgressBar(userAssessment?.preparedness)} color={ratingLabel(userAssessment?.preparedness)} />
+          </View>
+
+
+          <View style={{width:"100%",gap:5}}> 
+            <Text style={{fontSize:18}}>Teamwork skill</Text>
+            <ProgressBar style={{height:10,borderRadius:2}} progress={handleUserAssessmentProgressBar(userAssessment?.teamwork)} color={ratingLabel(userAssessment?.teamwork)} />
+          </View>
+            
+        </View>
+      </View>
+      )
+    }
+
+  </View>
+
+  </ScrollView>
+
+  )
 }
 
 const styles = StyleSheet.create({

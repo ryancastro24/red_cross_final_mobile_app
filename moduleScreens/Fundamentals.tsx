@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,ScrollView,Text } from 'react-native'
+import { View,ScrollView,Text,TouchableOpacity } from 'react-native'
 
 const FundamentalPrinciples = () => {
   return (
@@ -93,6 +93,7 @@ const FundamentalPrinciples = () => {
 
 
 
+   
 
 
 

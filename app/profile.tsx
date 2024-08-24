@@ -97,18 +97,24 @@ const EditProfile = () => {
 
 
         <View style={{position:"relative",top:-80, alignItems:"center",width:"100%"}}>
-        
+
+          {userData.profilePictureUrl === "" ?
+
+            <View style={{width:140,height:140,borderRadius:150,backgroundColor:"#d9d9d9",alignItems:"center", justifyContent:"center"}}>
+              <Text style={{fontSize:40,fontWeight:"900"}}>DP</Text>
+            </View>
+          
+              :
           <View style={{width:140,height:140,borderRadius:100,backgroundColor:"#d9d9d9",overflow:"hidden",alignItems:"center",justifyContent:"center"}}>
-          <Image  width={140}  height={140}  source={{
-          uri: userData.profilePictureUrl,
-        }}/>
+          <Image  width={140}  height={140}  source={{uri: userData.profilePictureUrl,}}/> 
           </View>
+          
+          }
     
           <View style={{marginTop:10,width:"100%",paddingHorizontal:25}}>
 
             <View>
               <Text style={{fontSize:35,fontWeight:900,textAlign:"center"}}>{userData.name}</Text>
-              <Text style={{fontSize:20,fontWeight:"200",color:"gold",textAlign:"center",fontStyle:"italic"}}>{userData.userType}</Text>
             
               </View>
             <View style={{marginTop:35,gap:20,width:"100%"}}>

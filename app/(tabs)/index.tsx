@@ -187,7 +187,10 @@ interface ItemProps extends Module {
         router.push("/moduleContainer/[id]")
         router.setParams({id:id.toString(),title:title})
   
-       }  } style={{...styles.item,...styles.shadowProp, marginLeft: index === 0 ? 0 : 20}}>      
+       }  } style={{...styles.item,...styles.shadowProp, marginLeft: index === 0 ? 0 : 20}}>  
+
+
+          
       
       <Image style={{position:"absolute",top:70,width:"100%",height:200,left:10}} source={require('../../assets/images/undraw_Reading_re_29f8.png')} />
   
@@ -224,9 +227,16 @@ interface ItemProps extends Module {
 
                   
                   <TouchableOpacity onPress={()=> router.push('/profile')}   style={{...styles.imageProfile,overflow:"hidden"}}>
-                      <Image  width={45}  height={45}  source={{
-                      uri: userData.profilePictureUrl,
-                    }}/>
+
+                      { userData.profilePictureUrl === "" ? 
+                        <View style={{width:45,height:45,borderRadius:150,backgroundColor:"white",alignItems:"center", justifyContent:"center"}}>
+                          <Text style={{fontSize:20,fontWeight:"900"}}>DP</Text>
+                        </View>
+                        :
+                        <Image  width={45}  height={45}  source={{ uri: userData.profilePictureUrl,}}/>
+                      }
+                      
+                   
                   </TouchableOpacity>
 
                 </View>
