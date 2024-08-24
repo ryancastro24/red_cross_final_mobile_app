@@ -3,12 +3,12 @@ import {router } from 'expo-router';
 import { useState,useCallback } from "react";
 import { useFocusEffect} from '@react-navigation/native';
 
-const Item   = ({name,field,id}:{name:string,field:string,id:string}) => (
+const Item   = ({name,field,_id}:{name:string,field:string,_id:string}) => (
      
   <TouchableOpacity onPress={() => {
     router.push("/evaluationForm")
-    router.setParams({id:id,name:name,field:field})
-  }} style={styles.cardContainer} key={id} >      
+    router.setParams({id:_id,name:name,field:field})
+  }} style={styles.cardContainer} key={_id} >      
   
         <View style={{width:60,height:60,borderRadius:120,backgroundColor:"#F1EFEF"}}></View>
         <View style={{width:"75%",gap:2}}>
@@ -26,7 +26,7 @@ const Evaulation = () => {
   const [instructors,setInstructors] = useState(null);
 
 
-  console.log(instructors)
+
   
   async function getData() {
     try {
