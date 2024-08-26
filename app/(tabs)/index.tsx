@@ -4,9 +4,8 @@ import Module1 from '@/moduleScreens/Module1';
 import { useNavigation ,useFocusEffect} from '@react-navigation/native';
 import { Searchbar,ActivityIndicator } from 'react-native-paper';
 import { modules } from '@/libs/modules';
-import { Link,router } from 'expo-router';
+import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Svg from 'react-native-svg';
 
 
 type LastModulePropType = {
