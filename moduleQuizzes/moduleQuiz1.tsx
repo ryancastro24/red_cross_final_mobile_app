@@ -4,25 +4,27 @@ import { useState, useCallback, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type ModuleDataPropType = {
-  moduleName: string;
-  totalScore: any[] | null;
-  userId: string | null;
-};
 
 type UserDataPropType = {
   _id: string;
   // You can add more properties if needed
 } | null;
 
-const ModuleQuiz1Container = () => {
-  const [userData, setUserData] = useState<UserDataPropType>(null);
-  const [moduleData, setModuleData] = useState<ModuleDataPropType>({
-    moduleName: "Module1",
-    totalScore: null,
-    userId: null, // Initially set to null
-  });
 
+// Assuming moduleDataResult has a defined type, for example:
+interface ModuleDataResult {
+  totalScore?: string[]; // Optional array of strings representing scores
+}
+
+interface Props {
+  moduleDataResult: ModuleDataResult | null; // moduleDataResult can be of type ModuleDataResult or null
+}
+
+const ModuleQuiz1Container = () => {
+  const [userData, setUserData] = useState<UserDataPropType>(null); 
+  const [submitDone,setSubmitDone] = useState(false);
+  const [moduleDataResult,setModuleDataResult] = useState<ModuleDataResult>()
+  const [loading,setLoading] = useState(false);
   const [answers, setAnswers] = useState<any>({
     ans1: "",
     ans2: "",
@@ -33,31 +35,8 @@ const ModuleQuiz1Container = () => {
 
  
 
-   const  handleSubmitData = async() => {
-    try {
-   
-      const response = await fetch('https://red-cross-api-final.onrender.com/api/modules', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(moduleData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-
-      console.log('Module Data',data);
-
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-
-  const handleSubmit = () => {
+ 
+  const handleSubmit = async() => {
     const scoreArr: any = [];
 
     for (let i = 1; i <= 5; i++) {
@@ -68,18 +47,49 @@ const ModuleQuiz1Container = () => {
       }
     }
 
-    setModuleData((prevModuleData) => ({
-      ...prevModuleData,
-      totalScore: scoreArr,
-      userId: userData?._id ?? null, // Update userId with userData._id if available
-    }));
+
+
+    setLoading(true);
+
+
+    try {
+   
+      const response = await fetch('https://red-cross-api-final.onrender.com/api/modules', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({moduleName:"Module1",totalScore:scoreArr,userId:userData?._id}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      
+      if(data){
+        setModuleDataResult(data);
+        setSubmitDone(true);
+        setLoading(false);
+      }
 
 
 
-    console.log(moduleData)
+    } catch (error) {
+      console.error('Error:', error);
+    }
 
-    handleSubmitData()
+   
   };
+
+
+
+
+
+
+  // get the user data
 
   async function getData() {
     try {
@@ -99,6 +109,7 @@ const ModuleQuiz1Container = () => {
 
       const data = await response.json();
 
+
       const finalUserData = data.data;
       console.log(finalUserData);
       setUserData(finalUserData);
@@ -107,15 +118,7 @@ const ModuleQuiz1Container = () => {
     }
   }
 
-  // Use useEffect to update moduleData when userData changes
-  useEffect(() => {
-    if (userData) {
-      setModuleData((prevModuleData) => ({
-        ...prevModuleData,
-        userId: userData._id, // Update userId when userData is fetched
-      }));
-    }
-  }, [userData]);
+
 
   useFocusEffect(
     useCallback(() => {
@@ -123,13 +126,38 @@ const ModuleQuiz1Container = () => {
     }, [])
   );
 
+  const totalScoreSum = moduleDataResult?.totalScore?.reduce((acc, val) => acc + Number(val), 0);
+
 
   return (
     <ScrollView>
+
+
+    {submitDone ? 
+
+
+    <View style={{flex:1,alignItems:"center",paddingVertical:100}}>
+      <Text style={{fontSize:20,fontWeight:"300"}}>Here is the Result:</Text>
+      <Text style={{fontSize:60,marginTop:20,fontWeight:"900"}}>{totalScoreSum} out of 5</Text>
+      <Text style={{fontSize:20,marginTop:30}}>{totalScoreSum === 5 ? "PERFECT! 🥳" : 
+          totalScoreSum === 4 ? "GREAT JOB 🥰" :
+          totalScoreSum === 3 ? "GOOD ENOUGH 😊" :
+          totalScoreSum === 2 ? "NICE TRY 🥺" :
+          totalScoreSum === 1 ? "SORRY FOR YOUR LOSE 😢" : "LOSER! 😭"
+        }
+      </Text>
+
+      
+    </View>
+
+:
+    
+<>
+
     <View style={{padding:20}}>
 
         <View style={{marginBottom:30}}>
-          <Text>Question Number 1</Text>
+          <Text>What is the primary purpose of first aid?</Text>
   <RadioButton.Group 
       onValueChange={(newValue) => setAnswers({ ...answers, ans1: newValue })} 
       value={answers.ans1} // Directly use answers.ans1 as the value 
@@ -137,19 +165,19 @@ const ModuleQuiz1Container = () => {
   <View style={{ justifyContent: "space-evenly", marginTop: 10 }}>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="0-1" />
-      <Text>Choice 1</Text>
-    </View>
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
-      <RadioButton value="0-2" />
-      <Text>Choice 2</Text>
+      <Text>To replace professional medical treatment</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="1" />
-      <Text>Choice 3</Text>
+      <Text>To provide immediate help until professional medical help arrives</Text>
+    </View>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
+      <RadioButton value="0-2" />
+      <Text>To perform surgeries on injured persons</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="0-3" />
-      <Text>Choice 4</Text>
+      <Text>To diagnose medical conditions</Text>
     </View>
   </View>
 </RadioButton.Group>
@@ -159,7 +187,7 @@ const ModuleQuiz1Container = () => {
 
 
         <View style={{marginBottom:30}}>
-          <Text>Question Number 2</Text>
+          <Text>What is included in the "Objectives of First Aid"?</Text>
           <RadioButton.Group 
      onValueChange={(newValue) => setAnswers({ ...answers, ans2: newValue })} 
       value={answers.ans2} // Directly use answers.ans1 as the value 
@@ -167,19 +195,19 @@ const ModuleQuiz1Container = () => {
   <View style={{ justifyContent: "space-evenly", marginTop: 10 }}>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="0-1" />
-      <Text>Choice 1</Text>
+      <Text>Preserve Life</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="0-2" />
-      <Text>Choice 2</Text>
+      <Text>Prevent further harm and complications</Text>
+    </View>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
+      <RadioButton value="-3" />
+      <Text>Seek immediate medical help</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="1" />
-      <Text>Choice 3</Text>
-    </View>
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
-      <RadioButton value="0-3" />
-      <Text>Choice 4</Text>
+      <Text>All of the above</Text>
     </View>
   </View>
 </RadioButton.Group>
@@ -189,27 +217,27 @@ const ModuleQuiz1Container = () => {
 
 
         <View style={{marginBottom:30}}>
-          <Text>Question Number 3</Text>
+          <Text>According to the content, what is Basic Life Support?</Text>
           <RadioButton.Group 
      onValueChange={(newValue) => setAnswers({ ...answers, ans3: newValue })} 
       value={answers.ans3} // Directly use answers.ans1 as the value 
 >
   <View style={{ justifyContent: "space-evenly", marginTop: 10 }}>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
-      <RadioButton value="0-1" />
-      <Text>Choice 1</Text>
+      <RadioButton value="1" />
+      <Text>A procedure to recognize respiratory or cardiac arrest and apply CPR</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="0-2" />
-      <Text>Choice 2</Text>
-    </View>
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
-      <RadioButton value="1" />
-      <Text>Choice 3</Text>
+      <Text>A comprehensive medical treatment plan</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="0-3" />
-      <Text>Choice 4</Text>
+      <Text>A method for diagnosing diseases</Text>
+    </View>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
+      <RadioButton value="0-1" />
+      <Text>A surgical intervention technique</Text>
     </View>
   </View>
 </RadioButton.Group>
@@ -221,27 +249,27 @@ const ModuleQuiz1Container = () => {
 
 
         <View style={{marginBottom:30}}> 
-          <Text>Question Number 4</Text>
+          <Text>Which of the following is a mode of disease transmission mentioned in the content?</Text>
           <RadioButton.Group 
       onValueChange={(newValue) => setAnswers({ ...answers, ans4: newValue })} 
       value={answers.ans4} // Directly use answers.ans1 as the value 
 >
   <View style={{ justifyContent: "space-evenly", marginTop: 10 }}>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
-      <RadioButton value="0-1" />
-      <Text>Choice 1</Text>
+      <RadioButton value="1" />
+      <Text>Telepathic communication</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="0-2" />
-      <Text>Choice 2</Text>
+      <Text>Direct contact</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
-      <RadioButton value="1" />
-      <Text>Choice 3</Text>
+      <RadioButton value="0-1" />
+      <Text>Mechanical devices</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="0-3" />
-      <Text>Choice 4</Text>
+      <Text> Genetic inheritance</Text>
     </View>
   </View>
 </RadioButton.Group>
@@ -252,27 +280,27 @@ const ModuleQuiz1Container = () => {
 
 
         <View>
-          <Text>Question Number 5</Text>
+          <Text>What is NOT a legal concern mentioned in relation to first aid?</Text>
           <RadioButton.Group 
       onValueChange={(newValue) => setAnswers({ ...answers, ans5: newValue })} 
       value={answers.ans5} // Directly use answers.ans1 as the value 
 >
   <View style={{ justifyContent: "space-evenly", marginTop: 10 }}>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
-      <RadioButton value="0-1" />
-      <Text>Choice 1</Text>
+      <RadioButton value="0-3" />
+      <Text>Consent</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="0-2" />
-      <Text>Choice 2</Text>
+      <Text>Duty to act</Text>
+    </View>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
+      <RadioButton value="0-1" />
+      <Text>Confidentiality</Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
       <RadioButton value="1" />
-      <Text>Choice 3</Text>
-    </View>
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
-      <RadioButton value="0-3" />
-      <Text>Choice 4</Text>
+      <Text>Medical Diagnosis</Text>
     </View>
   </View>
 </RadioButton.Group>
@@ -285,12 +313,13 @@ const ModuleQuiz1Container = () => {
     </View>
 
 
+
     <TouchableOpacity onPress={handleSubmit} style={{width:"100%",height:60,backgroundColor:"red",alignItems:"center",justifyContent:"center"}}>
       <Text style={{color:"white",fontSize:20,fontWeight:"900"}}>SUBMIT</Text>
     </TouchableOpacity>
 
-
-    
+</>
+}
 
     
 </ScrollView> 
