@@ -31,7 +31,7 @@ const Module1 = ({ moduleId }: { moduleId: number }) => {
             padding: 12,
           }}
         >
-          <Text style={{ fontSize: 23, fontWeight: "bold", color: "white" }}>
+          <Text style={{ fontSize: 23, fontFamily: "Poppins", color: "white" }}>
             Scope and Limitation
           </Text>
           <Text
@@ -41,6 +41,7 @@ const Module1 = ({ moduleId }: { moduleId: number }) => {
               lineHeight: 20,
               marginTop: 7,
               textAlign: "justify",
+              fontFamily: "Poppins",
             }}
           >
             First aid does not imply medical treatment and is by no means a
@@ -49,7 +50,7 @@ const Module1 = ({ moduleId }: { moduleId: number }) => {
         </View>
 
         <View style={{ marginTop: 25, gap: 7 }}>
-          <Text style={{ ...styles.p, fontSize: 22, fontWeight: "bold" }}>
+          <Text style={{ ...styles.p, fontSize: 22, fontFamily: "Poppins" }}>
             Basic Life Support
           </Text>
           <Text style={styles.p}>
@@ -88,9 +89,10 @@ const Module1 = ({ moduleId }: { moduleId: number }) => {
             <Text
               style={{
                 fontSize: 18,
-                fontWeight: "bold",
+
                 textAlign: "center",
                 color: "white",
+                fontFamily: "Poppins",
               }}
             >
               According to Article 12 no.4 of Act No.3815 of the Philippine
@@ -132,7 +134,7 @@ const Module1 = ({ moduleId }: { moduleId: number }) => {
             <Text
               style={{
                 fontSize: 18,
-                fontWeight: "bold",
+                fontFamily: "Poppins",
                 textAlign: "center",
                 color: "white",
               }}
@@ -174,7 +176,7 @@ const Module1 = ({ moduleId }: { moduleId: number }) => {
             padding: 12,
           }}
         >
-          <Text style={{ fontSize: 23, fontWeight: "bold", color: "white" }}>
+          <Text style={{ fontSize: 23, fontFamily: "Poppins", color: "white" }}>
             Dieseas Transmission
           </Text>
           <Text
@@ -184,22 +186,33 @@ const Module1 = ({ moduleId }: { moduleId: number }) => {
               marginTop: 7,
               textAlign: "justify",
               color: "white",
+              fontFamily: "Poppins",
             }}
           >
             Infectious diseases are those that can spread from one person to
             another through the following ways:{" "}
           </Text>
           <View style={{ marginTop: 10, gap: 7 }}>
-            <Text style={{ fontSize: 16, color: "white" }}>
+            <Text
+              style={{ fontSize: 16, color: "white", fontFamily: "Poppins" }}
+            >
               - Direct contact
             </Text>
-            <Text style={{ fontSize: 16, color: "white" }}>
+            <Text
+              style={{ fontSize: 16, color: "white", fontFamily: "Poppins" }}
+            >
               - Indirect contact
             </Text>
-            <Text style={{ fontSize: 16, color: "white" }}>
+            <Text
+              style={{ fontSize: 16, color: "white", fontFamily: "Poppins" }}
+            >
               - Airborne transmission
             </Text>
-            <Text style={{ fontSize: 16, color: "white" }}>- Bites</Text>
+            <Text
+              style={{ fontSize: 16, color: "white", fontFamily: "Poppins" }}
+            >
+              - Bites
+            </Text>
           </View>
         </View>
 
@@ -244,7 +257,9 @@ const Module1 = ({ moduleId }: { moduleId: number }) => {
         </View>
 
         <View style={{ gap: 7 }}>
-          <Text style={{ fontSize: 22, fontWeight: "bold", color: "white " }}>
+          <Text
+            style={{ fontSize: 22, fontFamily: "Poppins", color: "white " }}
+          >
             Prevention and Protection
           </Text>
           <Text style={styles.p}>
@@ -275,7 +290,9 @@ const Module1 = ({ moduleId }: { moduleId: number }) => {
             marginTop: 30,
           }}
         >
-          <Text style={{ color: "white", fontSize: 20 }}>TAKE THE QUIZ</Text>
+          <Text style={{ color: "white", fontSize: 20, fontFamily: "Poppins" }}>
+            TAKE THE QUIZ
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -287,13 +304,13 @@ export default Module1;
 const styles = StyleSheet.create({
   subheader: {
     fontSize: 30,
-
-    fontWeight: "900",
+    fontFamily: "Poppins",
   },
 
   p: {
     fontSize: 16,
     lineHeight: 25,
     textAlign: "justify",
+    fontFamily: "Poppins",
   },
 });
