@@ -90,9 +90,9 @@ const EditProfile = () => {
         }}
       >
         <Image
-          width={200}
-          height={200}
-          source={require("../assets/images/redcross team.png")}
+          width={100}
+          height={100}
+          source={require("../assets/images/cavite redcross.jpg")}
         />
       </View>
 
