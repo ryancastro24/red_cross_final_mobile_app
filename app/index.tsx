@@ -24,7 +24,7 @@ const MainPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState("");
   const handleSubmit = () => {
     setLoading(true);
     console.log(email, password);
@@ -44,18 +44,20 @@ const MainPage = () => {
       .then((data) => {
         console.log(data);
         if (data.status === "ok") {
-          Alert.alert("Logged In Successfully");
           AsyncStorage.setItem("token", data.data);
           AsyncStorage.setItem("isLoggedIn", JSON.stringify(true));
           router.replace("/(tabs)");
 
           setLoading(false);
         } else if (data.data === "User doesn't exists!!") {
-          Alert.alert(`User doesn't exist!!`);
+          setErrorMessage(`User doesn't exist!, try again`);
+          setPassword("");
+          setEmail("");
           setLoading(false);
         } else if (data.error === "incorrect password") {
-          Alert.alert(`Incorrect password`);
+          setErrorMessage(`Incorrect password , try again`);
           setLoading(false);
+          setPassword("");
         }
       })
       .catch((error) => {
@@ -107,6 +109,20 @@ const MainPage = () => {
           </Text>
         </TouchableOpacity>
 
+        {errorMessage && (
+          <Text
+            style={{
+              color: "red",
+              fontSize: 16,
+              marginTop: 10,
+              fontFamily: "Poppins",
+              textAlign: "right",
+            }}
+          >
+            {errorMessage}
+          </Text>
+        )}
+
         <TouchableOpacity onPress={() => router.push("/forgotPassword")}>
           <Text
             style={{
@@ -140,7 +156,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     gap: 10,
-    backgroundColor: "rgba(255, 255, 255, 0.40)",
+    backgroundColor: "rgba(255, 255, 255, 0.70)",
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -156,8 +172,8 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 140,
-    height: 140,
+    width: 100,
+    height: 100,
   },
   input: {
     height: 50,

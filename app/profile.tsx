@@ -247,7 +247,9 @@ const EditProfile = () => {
             onPress={() => handleLogout()}
             style={styles.logoutBtn}
           >
-            <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
+            <Text
+              style={{ fontSize: 18, fontFamily: "Poppins", color: "white" }}
+            >
               LOGOUT
             </Text>
           </TouchableOpacity>
