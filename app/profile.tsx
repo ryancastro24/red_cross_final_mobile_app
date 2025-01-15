@@ -140,7 +140,11 @@ const EditProfile = () => {
         <View style={{ marginTop: 10, width: "100%", paddingHorizontal: 25 }}>
           <View>
             <Text
-              style={{ fontSize: 35, fontWeight: 900, textAlign: "center" }}
+              style={{
+                fontSize: 25,
+                fontFamily: "Poppins",
+                textAlign: "center",
+              }}
             >
               {userData.name}
             </Text>

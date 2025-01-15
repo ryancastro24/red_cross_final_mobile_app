@@ -33,17 +33,18 @@ const Item = ({
         height: 60,
         backgroundColor: "#dadada",
         overflow: "hidden",
+        borderRadius: 120,
       }}
     >
       <Image
         style={{ width: "100%", height: "100%" }}
-        source={require(`../../assets/images/default-profile.png`)}
+        source={require(`../../assets/images/avatar.png`)}
       />
     </View>
 
     <View style={{ width: "75%", gap: 2 }}>
       <Text style={styles.cardName}>{name}</Text>
-      <Text style={{ fontSize: 16 }}>{field}</Text>
+      <Text style={{ fontSize: 16, fontFamily: "Poppins" }}>{field}</Text>
     </View>
   </TouchableOpacity>
 );
@@ -86,13 +87,6 @@ const Evaulation = () => {
     return (
       <View style={styles.main}>
         <Text style={styles.header}>Evaluate Trainers</Text>
-        <View
-          style={{
-            borderBottomColor: "black",
-            borderBottomWidth: StyleSheet.hairlineWidth,
-            marginTop: 5,
-          }}
-        />
 
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -116,6 +110,7 @@ const styles = StyleSheet.create({
 
   header: {
     fontSize: 25,
+    fontFamily: "Poppins",
   },
   cardContainer: {
     width: "100%",
@@ -134,8 +129,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   cardName: {
-    fontSize: 25,
-    fontWeight: "900",
+    fontSize: 23,
+    fontFamily: "Poppins",
     color: "#444242",
   },
 });
