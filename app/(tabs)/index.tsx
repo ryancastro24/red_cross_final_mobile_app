@@ -235,7 +235,7 @@ const HomeScreen: React.FC = () => {
 
         <View>
           <Searchbar
-            placeholder="Search"
+            placeholder="Search Module"
             onChangeText={setSearchData}
             value={searchData}
             theme={{ colors: { primary: "white" } }}

@@ -85,7 +85,7 @@ export default function CertificateDownload() {
         style={{ width: "100%", flex: 1, padding: 10, paddingVertical: 50 }}
       >
         <TouchableOpacity
-          disabled={!userData?.certificateApproved}
+          disabled={userData?.certificateUrl == ""}
           onPress={downloadCertificate}
           style={{
             width: "100%",
@@ -113,7 +113,7 @@ export default function CertificateDownload() {
             }}
           >
             <Text style={{ color: "white", fontSize: 20, fontWeight: "900" }}>
-              {!userData?.certificateApproved ? "LOCKED" : "DOWNLOAD NOW"}
+              {userData?.certificateUrl == "" ? "LOCKED" : "DOWNLOAD NOW"}
             </Text>
           </View>
         </TouchableOpacity>
