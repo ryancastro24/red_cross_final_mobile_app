@@ -12,7 +12,8 @@ import { router } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 
 type UserPropType = {
-  name: string;
+  firstname: string;
+  lastname: string;
   address: string;
   email: string;
   contact: string;
@@ -146,7 +147,7 @@ const EditProfile = () => {
                 textAlign: "center",
               }}
             >
-              {userData.name}
+              {userData.firstname} {userData.lastname}
             </Text>
           </View>
           <View style={{ marginTop: 35, gap: 20, width: "100%" }}>

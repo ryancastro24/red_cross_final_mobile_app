@@ -26,7 +26,8 @@ type LastModulePropType = {
 };
 
 type UserDataPropType = {
-  name: string;
+  firstname: string;
+  lastname: string;
   profilePictureUrl: string;
 };
 
@@ -128,8 +129,6 @@ const HomeScreen: React.FC = () => {
     );
   }
 
-  const firstname = userData.name.split(" ");
-
   const finalModules = modules.filter((val) =>
     val.title.startsWith(searchData)
   );
@@ -203,7 +202,7 @@ const HomeScreen: React.FC = () => {
             >
               Hello,{" "}
             </Text>
-            <Text style={{ color: "black" }}>{firstname[0]}</Text>
+            <Text style={{ color: "black" }}>{userData.firstname}</Text>
           </Text>
 
           <TouchableOpacity

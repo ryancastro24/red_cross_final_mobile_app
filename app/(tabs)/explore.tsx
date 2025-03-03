@@ -23,14 +23,6 @@ type UserPropType = {
   certificateApproved: boolean;
 };
 
-type UserAssessmentProptype = {
-  firsAid: string;
-  cpr: string;
-  pathogen: string;
-  preparedness: string;
-  teamwork: string;
-};
-
 export default function CertificateDownload() {
   const [userData, setUserData] = useState<UserPropType | null>(null); // Initialize with null to check if data is loaded
 

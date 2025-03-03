@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -13,11 +13,13 @@ const ForgotPassword = () => {
   const router = useRouter();
   const [email, setEmail] = useState(""); // State to store the email input
   const [otpSent, setOtpSent] = useState(false); // State to track OTP sent
-  const [otp, setOtp] = useState(""); // State to store OTP input
   const [otpConfirmed, setOtpConfirmed] = useState(false);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const inputRefs = useRef<Array<TextInput | null>>([]); // Define type for ref array
   const [otpError, setOtpError] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
   // Function to handle the submit button click
   const handleSubmit = async () => {
     setLoading(true);
@@ -35,7 +37,10 @@ const ForgotPassword = () => {
 
       const data = await response.json();
 
-      if (data.message) {
+      if (data.error) {
+        setEmailError(data.error);
+        setLoading(false);
+      } else if (data.message) {
         setLoading(false);
         setOtpSent(true); // Trigger OTP input display
       } else {
@@ -48,8 +53,11 @@ const ForgotPassword = () => {
 
   //  userOtp/confirmOtp
   // Function to handle OTP submission
+
   const handleOtpSubmit = async () => {
     setLoading(true);
+
+    const otpData = otp.join("");
     if (otp.length === 6) {
       try {
         const response = await fetch(
@@ -59,14 +67,13 @@ const ForgotPassword = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ otp: otp, email: email }), // Send the OTP in the request body
+            body: JSON.stringify({ otp: otpData, email: email }), // Send the OTP in the request body
           }
         );
 
         const data = await response.json();
         console.log(data);
         if (data.error) {
-          setOtp("");
           setOtpError(data.error);
         } else {
           setLoading(false);
@@ -82,6 +89,23 @@ const ForgotPassword = () => {
     }
   };
 
+  const handleChange = (text: string, index: number) => {
+    if (text.length > 1) return; // Prevent pasting multiple characters
+    const newOtp = [...otp];
+    newOtp[index] = text;
+    setOtp(newOtp);
+
+    // Move to next input if a number is entered
+    if (text && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleBackspace = (text: string, index: number) => {
+    if (!text && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
   const handleSubmitNewPassword = () => {
     setLoading(true);
 
@@ -162,18 +186,19 @@ const ForgotPassword = () => {
                 Enter the OTP:
               </Text>
               <View style={styles.otpContainer}>
-                {/* Create 6 OTP input fields */}
-                {Array.from({ length: 6 }).map((_, index) => (
+                {otp.map((digit, index) => (
                   <TextInput
                     key={index}
+                    ref={(el) => (inputRefs.current[index] = el)}
                     style={styles.otpInput}
                     maxLength={1}
                     keyboardType="numeric"
-                    value={otp[index] || ""}
-                    onChangeText={(text) => {
-                      const newOtp = otp.split("");
-                      newOtp[index] = text;
-                      setOtp(newOtp.join(""));
+                    value={digit}
+                    onChangeText={(text) => handleChange(text, index)}
+                    onKeyPress={({ nativeEvent }) => {
+                      if (nativeEvent.key === "Backspace") {
+                        handleBackspace(digit, index);
+                      }
                     }}
                   />
                 ))}
@@ -209,11 +234,25 @@ const ForgotPassword = () => {
                 value={email} // Bind the email state to the input field
                 onChangeText={(text) => setEmail(text)} // Update state when the input changes
               />
+
               <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                 <Text style={styles.buttonText}>
                   {loading ? <ActivityIndicator color="white" /> : "Submit"}
                 </Text>
               </TouchableOpacity>
+
+              {emailError && (
+                <Text
+                  style={{
+                    color: "red",
+                    fontFamily: "Poppins",
+                    fontSize: 18,
+                    marginTop: 10,
+                  }}
+                >
+                  {emailError}
+                </Text>
+              )}
             </>
           )}
         </>
